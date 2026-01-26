@@ -1,0 +1,52 @@
+# Este archivo nos permite definir varios servicios y poder levantarlos en un mismo comando
+# indicamos qué imagen o build usar, qué puertos mapear, volúmenes, dependencias y variables de entorno.
+# para iniciar por primera vez debemos colocar el comando docker compose up --build 
+# luego para volver a iniciarlo docker compose up 
+# y para detener el o los contenedores docker compose down
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: proyectoFinal
+
+  backend:
+    build:
+      context: ./comfort
+      dockerfile: Dockerfile
+    container_name: comfort-backend
+    command: npm run start:dev
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./comfort/.env
+    depends_on:
+      - mongo
+    volumes:
+      - ./comfort:/app
+      - /app/node_modules
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: comfort-frontend
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env.local
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      
+volumes:
+  mongo_data:
