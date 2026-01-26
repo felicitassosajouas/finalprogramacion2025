@@ -4,7 +4,11 @@ import { CreateRegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 
+<<<<<<< HEAD
 @Controller('auth')
+=======
+@Controller('auth') //prefijo
+>>>>>>> origin/master
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
