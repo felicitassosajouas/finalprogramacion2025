@@ -1,18 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-<<<<<<< HEAD
-import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
   ],
+  optimizeDeps: {
+    include: ['swiper', 'swiper/css', 'swiper/css/pagination', 'swiper/css/navigation']
+  }
 })
-=======
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
->>>>>>> origin/master

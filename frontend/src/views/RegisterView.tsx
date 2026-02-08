@@ -23,34 +23,13 @@ export default function registerView() {
 
     const registerUser = async (formData : RegisterForm) => {
         try {
-<<<<<<< HEAD
-            const { data } = await api.post('/auth/register', formData);
-            
-            // Notificación legible
-            toast.success(data.message || 'Cuenta creada correctamente', {
-                style: { background: '#ffffff', color: '#1e293b' }
-            });
-            
-            reset();
-
-            // Te manda al login después de registrarte
-            setTimeout(() => {
-                navigate('/login');
-            }, 1500);
-
-        } catch (error) {
-            if (isAxiosError(error) && error.response){
-                toast.error(error.response.data.message, {
-                    style: { background: '#ffffff', color: '#1e293b' }
-                });
-=======
             const {data} = await api.post('/auth/register', formData)
             toast.success(data.message)
             reset()
+
         } catch (error) {
             if (isAxiosError(error) && error.response){
                 toast.error(error.response.data.message);
->>>>>>> origin/master
             };
         }
     }
@@ -196,25 +175,14 @@ export default function registerView() {
                 />
                 
             </form>
-<<<<<<< HEAD
-    <nav className="mt-10">
-        <Link
-            className="text-center text-white text-lg block hover:underline"
-            to='/login'
-        >
-            ¿Ya tenés cuenta? Iniciá Sesión
-        </Link>
-    </nav>
-=======
             <nav className="mt-10">
                 <Link
                     className=" text-center text-white text-lg block"
-                    to='/auth/login'
+                    to='/login'
                 >
-                        Registrado! Inicia Sesion
+                        ¡Registrado con éxito!, iniciá Sesión
                 </Link>
             </nav>
->>>>>>> origin/master
         </>
     )
 }

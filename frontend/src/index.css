@@ -1,7 +1,29 @@
-<<<<<<< HEAD
 @import "tailwindcss";
-=======
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
->>>>>>> origin/master
+
+@theme {
+  /* Definimos tus colores de Rumbo para que el naranja y el azul vuelvan */
+    --color-rumbo-orange: #fd6303;
+    --color-rumbo-blue: #5d81d1;
+}
+
+/* REGLA DE ORO: Esto es lo que va a achicar el logo gigante de una vez */
+@layer base {
+    img {
+        max-width: 100%;
+        height: auto;
+        display: inline-block; /* Evita que el logo sea un bloque gigante */
+    }
+}
+
+/* Estilos para que el carrusel se vea como en tu foto de WhatsApp */
+.swiper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    border-radius: 1.5rem;
+}
+
+.swiper-slide img {
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

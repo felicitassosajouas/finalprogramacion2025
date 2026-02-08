@@ -25,7 +25,7 @@ export default function UsersView() {
 
             <main className="flex-grow p-10 text-center">
                 <h1 className="text-4xl font-bold text-slate-700">
-                    ¡Tu próxima aventura comienza aquí! Contanos un poco sobre vos completando este formulario y te mostraremos viajes, eventos y free walking tours ideales para vivir experiencias únicas.
+                    ¡Tu próxima aventura comienza aquí!. Contanos sobre tu viaje completando este formulario y te mostraremos viajes, eventos y free walking tours ideales para vivir experiencias únicas.
                 </h1>
 
                 <nav className="mt-10">
