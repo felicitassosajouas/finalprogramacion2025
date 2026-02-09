@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm} from "react-hook-form";
 import { isAxiosError} from "axios";
 import { toast } from 'sonner'
@@ -7,6 +7,8 @@ import type { RegisterForm } from "../types"
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function registerView() {
+
+    const navigate = useNavigate();
 
     const initialValues: RegisterForm = {
         fullname: '',
@@ -23,7 +25,6 @@ export default function registerView() {
 
     const registerUser = async (formData : RegisterForm) => {
         try {
-<<<<<<< HEAD
             const { data } = await api.post('/auth/register', formData);
             
             // Notificación legible
@@ -43,14 +44,6 @@ export default function registerView() {
                 toast.error(error.response.data.message, {
                     style: { background: '#ffffff', color: '#1e293b' }
                 });
-=======
-            const {data} = await api.post('/auth/register', formData)
-            toast.success(data.message)
-            reset()
-        } catch (error) {
-            if (isAxiosError(error) && error.response){
-                toast.error(error.response.data.message);
->>>>>>> origin/master
             };
         }
     }
@@ -196,7 +189,6 @@ export default function registerView() {
                 />
                 
             </form>
-<<<<<<< HEAD
     <nav className="mt-10">
         <Link
             className="text-center text-white text-lg block hover:underline"
@@ -205,16 +197,6 @@ export default function registerView() {
             ¿Ya tenés cuenta? Iniciá Sesión
         </Link>
     </nav>
-=======
-            <nav className="mt-10">
-                <Link
-                    className=" text-center text-white text-lg block"
-                    to='/auth/login'
-                >
-                        Registrado! Inicia Sesion
-                </Link>
-            </nav>
->>>>>>> origin/master
         </>
     )
 }

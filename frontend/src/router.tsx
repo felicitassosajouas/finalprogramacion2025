@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-=======
-// aca vamos a mostrar que componentes le vamos a mostrar al usuario
-
->>>>>>> origin/master
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import LoginView from './views/LoginView'
+import LoginView from './views/LoginView';
 import MainView from './views/MainView';
 import RegisterView from './views/RegisterView';
 import AuthLayout from './layouts/AuthLayout';
@@ -27,11 +22,7 @@ export default function Router(){
                 </Route>
 
                 <Route element={<AuthLayout/>}>
-<<<<<<< HEAD
                     <Route path='/login' element={<LoginView/>} />
-=======
-                    <Route path='/auth/login' element={<LoginView/>} />
->>>>>>> origin/master
                     <Route path='/auth/register' element={<RegisterView/>} />
                 </Route>
 

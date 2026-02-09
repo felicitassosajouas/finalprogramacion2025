@@ -1,7 +1,24 @@
-<<<<<<< HEAD
 @import "tailwindcss";
-=======
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
->>>>>>> origin/master
+
+@theme {
+    --color-rumbo-orange: #fd6303;
+    --color-bg-crema: #f9faf5;
+}
+
+@layer base {
+  /* ESTO ACHICA EL LOGO */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: inline-block;
+    }
+}
+
+/* Esconde la barra de scroll en el carrusel nativo */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
