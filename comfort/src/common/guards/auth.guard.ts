@@ -1,8 +1,9 @@
+// comfort/src/common/guards/auth.guard.ts
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from '../../auth/jwt/jwt.constant';
+// IMPORTANTE: Todo en minúsculas para evitar el error de "casing"
+import { jwtConstants } from '../../auth/jwt/jwt.constant'; 
 import { Request } from 'express';
-
 
 @Injectable()
 export class AuthGuard implements CanActivate {

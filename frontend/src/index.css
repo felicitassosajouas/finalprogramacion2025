@@ -2,7 +2,12 @@
 
 @theme {
     --color-rumbo-orange: #fd6303;
+    --color-rumbo-azul: #5d81d1;
+    --color-rumbo-magenta: #dd474c;
     --color-bg-crema: #f9faf5;
+    /* Familias tipográficas */
+    --font-alegreya: "Alegreya Sans", sans-serif;
+    --font-bree: "Bree Serif", serif;
 }
 
 @layer base {

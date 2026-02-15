@@ -15,7 +15,8 @@ import { ReservasModule } from './reserver/reserver.module';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI||''),
+    // CAMBIO AQUÍ: Ponemos la dirección a mano para evitar que lea basura del .env
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/comfort'), 
     AuthModule,
     UsersModule,
     AppNestModule,

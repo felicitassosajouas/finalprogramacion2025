@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
 Azul (#5d81d1)
 Naranja (#fd6303)
@@ -7,15 +6,9 @@ fondo bg-[#f9faf5]
 */
 /* ACÁ TENGO QUE PONER EL CODIGO PARA EDITAR EL CARRUSEL */
 
-*{
-  background-color: #f9faf5 !important;
-}
-=======
->>>>>>> origin/master
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 

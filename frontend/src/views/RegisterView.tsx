@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useForm} from "react-hook-form";
-import { isAxiosError} from "axios";
-import { toast } from 'sonner'
-import api  from '../config/axios'
-import type { RegisterForm } from "../types"
+import { useForm } from "react-hook-form";
+import { isAxiosError } from "axios";
+import { toast } from 'sonner';
+import api from '../config/axios';
+import type { RegisterForm } from "../types";
 import ErrorMessage from "../components/ErrorMessage";
 
-export default function registerView() {
-
+export default function RegisterView() {
     const navigate = useNavigate();
 
     const initialValues: RegisterForm = {
@@ -17,186 +16,191 @@ export default function registerView() {
         phone: '',
         password: '',
         password_confirmation: ''
-    }
+    };
 
-    const {register, watch, reset, handleSubmit, formState: {errors}} = useForm<RegisterForm>({defaultValues: initialValues})
+    const { register, watch, reset, handleSubmit, formState: { errors } } = useForm<RegisterForm>({ 
+        defaultValues: initialValues 
+    });
 
-    const password = watch('password')
+    // Observar el password para la validación de confirmación
+    const password = watch('password');
 
-    const registerUser = async (formData : RegisterForm) => {
+    const registerUser = async (formData: RegisterForm) => {
         try {
-            const { data } = await api.post('/auth/register', formData);
+            const { data } = await api.post('http://localhost:4000/auth/register', formData);
             
-            // Notificación legible
-            toast.success(data.message || 'Cuenta creada correctamente', {
+            toast.success(data.message || '¡Cuenta creada correctamente!', {
                 style: { background: '#ffffff', color: '#1e293b' }
             });
             
             reset();
 
-            // Te manda al login después de registrarte
             setTimeout(() => {
                 navigate('/login');
             }, 1500);
 
         } catch (error) {
-            if (isAxiosError(error) && error.response){
-                toast.error(error.response.data.message, {
-                    style: { background: '#ffffff', color: '#1e293b' }
+            console.error("Error en el registro:", error);
+            
+            if (isAxiosError(error) && error.response) {
+                // Captura el mensaje real del backend para evitar notificaciones vacías
+                const errorMsg = error.response.data.message || 
+                                    error.response.data.error || 
+                                    "Error al registrarse. Verifique los datos.";
+                
+                toast.error(errorMsg, {
+                    style: { 
+                        background: '#ffffff', 
+                        color: '#1e293b',
+                        borderLeft: '4px solid #dd474c' 
+                    }
                 });
-            };
+            } else {
+                toast.error("Error de conexión con el servidor");
+            }
         }
-    }
+    };
 
     return (
-        <>
-            <h1 className="text-5xl text-white font-bold text-center">
-                Crear cuenta
+        <div className="flex flex-col items-center font-alegreya">
+            {/* Título Bree Serif Naranja Rumbo */}
+            <h1 className="text-rumbo-orange text-6xl font-bree mb-8 tracking-tighter text-center">
+                Regristrate
             </h1>
 
+            {/* Cuadro Celeste con bordes redondeados extremos */}
             <form
                 onSubmit={handleSubmit(registerUser)}
-                className="bg-white px-5 py-10 rounded-lg space-y-8 mt-10 max-w-md mx-auto shadow-lg"
+                className="bg-[#dbeafe] px-10 py-12 rounded-[2.5rem] shadow-sm w-full max-w-[480px] flex flex-col items-center"
+                noValidate
             >
-                
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="fullname" className="text-xl text-slate-600 font-semibold">
-                        Full Name
+                {/* Full Name */}
+                <div className="w-full mb-5 flex flex-col items-center">
+                    <label htmlFor="fullname" className="text-xl text-slate-800 font-bold mb-2 text-center">
+                        Nombre Completo
                     </label>
                     <input 
                         id="fullname"
                         type="text" 
-                        placeholder="Nombre Completo"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-                        {...register('fullname',{
-                            required: " El nombre es obligatorio"
-                        })}
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
+                        {...register('fullname', { required: "El nombre es obligatorio" })}
                     />
-
                     {errors.fullname && <ErrorMessage>{errors.fullname.message}</ErrorMessage>}
                 </div>
 
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="dni" className="text-xl text-slate-600 font-semibold">
+                {/* D.N.I */}
+                <div className="w-full mb-5 flex flex-col items-center">
+                    <label htmlFor="dni" className="text-xl text-slate-800 font-bold mb-2 text-center">
                         D.N.I
                     </label>
                     <input 
                         id="dni"
                         type="text" 
-                        placeholder="D.N.I"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-                        {...register('dni',{
-                            required: " El D.N.I es obligatorio",
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
+                        {...register('dni', {
+                            required: "El D.N.I es obligatorio",
                             pattern: {
                                 value: /^[0-9]{7,8}$/,
-                                message: "Debe contener solo números (7 u 8 dígitos)",
+                                message: "Debe contener 7 u 8 dígitos"
                             }
                         })}
                     />
-
-                    {errors.dni && <ErrorMessage>{errors.dni?.message}</ErrorMessage>}
+                    {errors.dni && <ErrorMessage>{errors.dni.message}</ErrorMessage>}
                 </div>
 
-                
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="email" className="text-xl text-slate-600 font-semibold">
+                {/* Email */}
+                <div className="w-full mb-5 flex flex-col items-center">
+                    <label htmlFor="email" className="text-xl text-slate-800 font-bold mb-2 text-center">
                         Email
                     </label>
                     <input
                         id="email"
                         type="email" 
-                        placeholder="Correo electrónico"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-                        {...register('email',{
-                            required: " El Email es obligatorio",
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
+                        {...register('email', {
+                            required: "El Email es obligatorio",
                             pattern: {
                                 value: /\S+@\S+\.\S+/,
-                                message: "E-mail no válido",
-                            },                            
+                                message: "E-mail no válido"
+                            }
                         })}
                     />
                     {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-
                 </div>
 
-                
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="phone" className="text-xl text-slate-600 font-semibold">
-                        Phone
+                {/* Phone */}
+                <div className="w-full mb-5 flex flex-col items-center">
+                    <label htmlFor="phone" className="text-xl text-slate-800 font-bold mb-2 text-center">
+                        Teléfono
                     </label>
                     <input
                         id="phone"
                         type="tel" 
-                        placeholder="Teléfono"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-                        {...register('phone',{
-                            required: " El telefono es obligatorio",
-                            minLength:{
-                                value: 10,
-                                message: "El número debe ser mínimo de 10 caracteres"
-                            },
-                            pattern:{
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
+                        {...register('phone', {
+                            required: "El teléfono es obligatorio",
+                            pattern: {
                                 value: /^[0-9]+$/,
-                                message: "Solo se permiten números",
+                                message: "Solo números"
                             }
                         })}
-
                     />
-                    {errors.phone && <ErrorMessage>{errors.phone?.message}</ErrorMessage>}
-
+                    {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
                 </div>
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="password" className="text-xl text-slate-600 font-semibold">
-                        Password
+
+                {/* Password */}
+                <div className="w-full mb-5 flex flex-col items-center">
+                    <label htmlFor="password" className="text-xl text-slate-800 font-bold mb-2 text-center">
+                        Contraseña
                     </label>
                     <input
                         id="password"
                         type="password" 
-                        placeholder="Contraseña"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-                        {...register('password',{
-                            required: " El password es obligatorio",
-                            minLength:{
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
+                        {...register('password', {
+                            required: "El password es obligatorio",
+                            minLength: {
                                 value: 8,
-                                message: "El password debe ser mínimo de 8 caracteres"
+                                message: "Mínimo 8 caracteres"
                             }
                         })}
-
                     />
-
                     {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
                 </div>
 
-                <div className="grid grid-cols-1 space-y-2">
-                    <label htmlFor="password_confirmation" className="text-xl text-slate-600 font-semibold">Repetir Password</label>
+                {/* Repetir Password */}
+                <div className="w-full mb-8 flex flex-col items-center">
+                    <label htmlFor="password_confirmation" className="text-xl text-slate-800 font-bold mb-2 text-center">
+                        Repetir contraseña
+                    </label>
                     <input
                         id="password_confirmation"
                         type="password"
-                        placeholder="Repetir Contraseña"
-                        className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+                        className="w-full bg-[#abc5f5] border-none p-2.5 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-rumbo-azul"
                         {...register('password_confirmation', {
-                            required: "Repetir Password es obligatorio",
-                            validate: value => value === password || "Las contraseñas no coinciden"                            
+                            required: "Confirmación obligatoria",
+                            validate: value => value === password || "Las contraseñas no coinciden"
                         })}
                     />
                     {errors.password_confirmation && <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>}
                 </div>
-                
+
+                {/* Botón Ingresar Blanco Bree Serif */}
                 <input
                     type="submit"
-                    className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-                    value='Crear Cuenta'
+                    className="bg-white px-12 py-2 text-[#1e293b] font-bree text-2xl font-bold rounded-2xl shadow-md hover:scale-105 transition-transform border border-slate-100 cursor-pointer"
+                    value="Ingresar"
                 />
-                
             </form>
-    <nav className="mt-10">
-        <Link
-            className="text-center text-white text-lg block hover:underline"
-            to='/login'
-        >
-            ¿Ya tenés cuenta? Iniciá Sesión
-        </Link>
-    </nav>
-        </>
-    )
+
+            <nav className="mt-8 text-xl">
+                <p className="text-slate-600 font-alegreya">
+                    ¿Ya tenés una cuenta?{' '}
+                    <Link to='/login' className="text-rumbo-orange font-bold hover:underline decoration-2">
+                        Iniciá Sesión
+                    </Link>
+                </p>
+            </nav>
+        </div>
+    );
 }

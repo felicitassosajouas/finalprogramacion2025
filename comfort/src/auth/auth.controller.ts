@@ -1,19 +1,16 @@
-import { Controller, Post, Body, ConflictException, HttpCode, HttpStatus, Request, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus, Request, UseGuards, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateRegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 
-<<<<<<< HEAD
-@Controller('auth')
-=======
-@Controller('auth') //prefijo
->>>>>>> origin/master
+@Controller('auth') // Este es el prefijo que usamos en el frontend: /auth/register
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('register')
     async register(@Body() createRegisterDto: CreateRegisterDto) {
+        // Este método recibe fullname, dni, email, phone y password desde el frontend
         return this.authService.register(createRegisterDto);
     }
 
@@ -32,5 +29,4 @@ export class AuthController {
             email: req.user.email,
         };
     }
-
 }

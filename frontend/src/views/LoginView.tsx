@@ -7,108 +7,79 @@ import { toast } from "sonner";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function LoginView() {
-    const initialValues: LoginForm = {
-        email: '',
-        password: ''
-    };
-
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
 
     const handleLogin = async (formData: LoginForm) => {
         try {
-            const { data } = await api.post(`/auth/login`, formData);
+            // ÚNICO CAMBIO: URL absoluta para conectar con el backend en el puerto 4000
+            const { data } = await api.post(`http://localhost:4000/auth/login`, formData);
             
-            // 1. Guardamos el token
+            // Guardamos el token para mantener la sesión iniciada
             localStorage.setItem('token', data.accessToken);
-
-            // 2. Notificación con texto visible (Gris oscuro)
-            toast.success('¡Bienvenido a Rumbo!', {
-                style: {
-                    background: '#ffffff',
-                    color: '#1e293b',
-                    borderBottom: '4px solid #fd6303'
-                }
-            });
-
-            // 3. REDIRECCIÓN FORZADA: Te manda a la landing "/"
-            setTimeout(() => {
-                window.location.href = '/'; 
-            }, 600);
-
+            
+            toast.success('¡Bienvenido a Rumbo!');
+            
+            // Redirección al MainView de Mendoza
+            setTimeout(() => { navigate("/"); }, 600);
+            
         } catch (error) {
+            console.error("Error en el login:", error);
             if (isAxiosError(error) && error.response) {
-                toast.error(error.response.data.message || 'Error al iniciar sesión', {
-                    style: {
-                        background: '#ffffff',
-                        color: '#1e293b',
-                        borderLeft: '4px solid #dd474c'
-                    },
-                });
+                toast.error(error.response.data.message || 'Error al iniciar sesión');
+            } else {
+                toast.error("Error de conexión con el servidor");
             }
         }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[85vh] bg-[#1e293b]"> 
-            <h1 className="text-6xl text-white font-bold text-center lowercase mb-12 tracking-tighter">
-                iniciar sesión
+        <div className="flex flex-col items-center font-alegreya">
+            {/* Título en Naranja Rumbo y Bree Serif */}
+            <h1 className="text-[#fd6303] text-5xl font-bree mb-8 tracking-tighter">
+                Iniciá Sesión
             </h1>
 
+            {/* Contenedor Celeste con bordes redondeados extremos */}
             <form
                 onSubmit={handleSubmit(handleLogin)}
-                className="bg-white px-10 py-12 rounded-[3rem] space-y-8 w-full max-w-md shadow-2xl"
+                className="bg-[#dbeafe] px-12 py-16 rounded-[2.5rem] shadow-sm w-full max-w-[450px] flex flex-col items-center"
                 noValidate
             >
-                <div className="flex flex-col space-y-2">
-                    <label className="text-xl text-slate-700 font-bold ml-1">Email</label>
+                <div className="w-full mb-8 flex flex-col items-center text-center">
+                    <label className="text-2xl text-slate-800 font-bold mb-3">Correo electrónico</label>
                     <input
-                        id="email"
                         type="email"
-                        placeholder="tu@correo.com"
-                        className="bg-[#edf2f7] border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#5d81d1] outline-none transition-all placeholder-slate-400"
-                        {...register('email', {
-                            required: "El Email es obligatorio",
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: "E-mail no válido",
-                            },
-                        })}
+                        className="w-full bg-[#abc5f5] border-none p-3 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-[#5d81d1]"
+                        {...register('email', { required: "El correo es obligatorio" })}
                     />
                     {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
                 </div>
 
-                <div className="flex flex-col space-y-2">
-                    <label className="text-xl text-slate-700 font-bold ml-1">Password</label>
+                <div className="w-full mb-10 flex flex-col items-center text-center">
+                    <label className="text-2xl text-slate-800 font-bold mb-3">Contraseña</label>
                     <input
-                        id="password"
                         type="password"
-                        placeholder="********"
-                        className="bg-[#edf2f7] border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#5d81d1] outline-none transition-all placeholder-slate-400"
-                        {...register('password', {
-                            required: "El password es obligatorio",
-                            minLength: {
-                                value: 8,
-                                message: "El password debe ser mínimo de 8 caracteres"
-                            }
-                        })}
+                        className="w-full bg-[#abc5f5] border-none p-3 rounded-xl outline-none text-center text-lg focus:ring-2 focus:ring-[#5d81d1]"
+                        {...register('password', { required: "La contraseña es obligatoria" })}
                     />
                     {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
                 </div>
 
-                <input
+                {/* Botón Ingresar Blanco con Bree Serif */}
+                <button
                     type="submit"
-                    className="bg-[#fd6303] p-5 text-white text-2xl w-full rounded-full font-black cursor-pointer hover:scale-[1.03] active:scale-95 transition-all shadow-lg mt-4"
-                    value="Ingresar"
-                />
+                    className="bg-white px-12 py-2 text-[#1e293b] font-bree text-2xl rounded-2xl shadow-md hover:scale-105 transition-transform border border-slate-100"
+                >
+                    Ingresar
+                </button>
             </form>
 
-            <nav className="mt-12 text-center">
-                <Link
-                    className="text-white text-xl font-medium hover:underline tracking-tight"
-                    to='/auth/register'
-                >
-                    ¿No tenés cuenta? <span className="font-extrabold">Registrate aquí</span>
+            {/* Link inferior en Naranja Rumbo */}
+            <nav className="mt-8 text-xl">
+                <span className="text-slate-600">¿No te has registrado? </span>
+                <Link to='/auth/register' className="text-[#fd6303] font-bold hover:underline">
+                    Creá tu cuenta
                 </Link>
             </nav>
         </div>
