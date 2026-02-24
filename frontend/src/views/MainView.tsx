@@ -19,5 +19,5 @@ export default function MainView() {
                 <p>© 2026 Rumbo – Todos los derechos reservados.</p>
             </footer>
         </div>
-    );
+    ); 
 }

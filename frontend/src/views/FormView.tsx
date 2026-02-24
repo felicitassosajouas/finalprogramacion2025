@@ -71,7 +71,6 @@ export default function PlanificarViaje() {
   };
 
   return (
-    <>
       <div className=" bg-slate-800 min-h-screen">
               <h1 className="text-5xl text-white font-bold text-center">
         Planifica tu Viaje
@@ -250,7 +249,5 @@ export default function PlanificarViaje() {
           </div>
         )}
       </div>
-
-    </>
   );
 }
