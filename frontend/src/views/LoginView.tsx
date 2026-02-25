@@ -13,7 +13,7 @@ export default function LoginView() {
     const handleLogin = async (formData: LoginForm) => {
         try {
             // ÚNICO CAMBIO: URL absoluta para conectar con el backend en el puerto 4000
-            const { data } = await api.post(`http://localhost:4000/auth/login`, formData);
+            const { data } = await api.post(`auth/login`, formData);
             
             // Guardamos el token para mantener la sesión iniciada
             localStorage.setItem('token', data.accessToken);
@@ -21,7 +21,7 @@ export default function LoginView() {
             toast.success('¡Bienvenido a Rumbo!');
             
             // Redirección al MainView de Mendoza
-            setTimeout(() => { navigate("/"); }, 600);
+            setTimeout(() => { navigate("/users"); }, 600);
             
         } catch (error) {
             console.error("Error en el login:", error);

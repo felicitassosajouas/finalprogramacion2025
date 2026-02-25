@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 👇 ACTIVAR DARK MODE POR CLASE */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-rumbo-orange: #fd6303;
     --color-rumbo-azul: #5d81d1;

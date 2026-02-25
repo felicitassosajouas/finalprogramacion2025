@@ -16,7 +16,7 @@ import { ReservasModule } from './reserver/reserver.module';
       isGlobal: true
     }),
     // CAMBIO AQUÍ: Ponemos la dirección a mano para evitar que lea basura del .env
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/comfort'), 
+    MongooseModule.forRoot(process.env.MONGO_URI||''), 
     AuthModule,
     UsersModule,
     AppNestModule,

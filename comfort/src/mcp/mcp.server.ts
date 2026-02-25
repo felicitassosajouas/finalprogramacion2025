@@ -12,7 +12,7 @@ export async function startMcpServer() {
   });
 
   const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   recomendarHandler = async (args: any) => {
     const prompt = args.prompt ?? "Dame 3 recomendaciones básicas para Mendoza";
@@ -24,15 +24,22 @@ export async function startMcpServer() {
     };
   };
 
-server.registerTool(
+  server.tool(
     "recomendar",
     {
-      description: "Brinda recomendaciones sobre Mendoza",
-      inputSchema: z.object({
-        prompt: z.string().describe("El tema sobre el cual pedir recomendaciones").optional(),
-      }),
+      prompt: z.string().optional(),
     },
-    recomendarHandler
+    async (args) => {
+      const prompt =
+        args.prompt ?? "Dame 3 recomendaciones básicas para Mendoza";
+
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+
+      return {
+        content: [{ type: "text", text }],
+      };
+    }
   );
 
   return server;
