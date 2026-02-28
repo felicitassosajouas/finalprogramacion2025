@@ -42,12 +42,12 @@ export default function Header({ fullname }: HeaderProps) {
                 onClick={() => navigate("/")}
             >
                 <img
-                    src="logo.png"
+                    src="logo1234.png"
                     alt="Rumbo Logo"
                     className="h-10 w-auto object-contain"
                 />
                 <span className="text-[#5d81d1] dark:text-blue-400 font-bold text-3xl lowercase tracking-tighter">
-                    rumbo
+                    Rumbo
                 </span>
             </div>
 

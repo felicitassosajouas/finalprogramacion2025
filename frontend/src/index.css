@@ -30,3 +30,16 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* imagenes atrás del login*/
+@keyframes floatSlow {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-30px) translateX(20px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes floatSlowReverse {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(30px) translateX(-20px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
