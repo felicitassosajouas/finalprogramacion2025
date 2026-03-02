@@ -41,7 +41,7 @@ export const Features = () => {
                             }
                         >
                             <div
-                                className={`relative h-72 w-full
+                                className={`relative h-56 w-full
                                 transition-all duration-700 ease-[cubic-bezier(.4,.2,.2,1)]
                                 [transform-style:preserve-3d]
                                 ${isActive ? "[transform:rotateY(180deg)]" : ""}
