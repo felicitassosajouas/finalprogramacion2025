@@ -257,9 +257,30 @@ import { useForm } from "react-hook-form";
 import type { TypeForm } from "../types/forms";
 import ErrorMessage from "../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import { jwtDecode } from "jwt-decode";
+
+interface TokenPayload {
+  fullname: string;
+  email: string;
+  iat: number;
+  exp: number;
+}
 
 export default function PlanificarViaje() {
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  let fullname = "";
+
+  if (token) {
+    try {
+      const decoded = jwtDecode<TokenPayload>(token);
+      fullname = decoded.fullname;
+    } catch (error) {
+      console.error("Token inválido");
+    }
+  }
 
   const initialValues: TypeForm = {
     numberOfPeople: 1,
@@ -280,126 +301,159 @@ export default function PlanificarViaje() {
   });
 
   const siguientePaso = (data: TypeForm) => {
-    navigate("/form-step2", { state: data });
+    navigate("/form2", { state: data });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900 p-6">
+    <div className="flex flex-col min-h-screen font-alegreya">
 
-      <form
-        onSubmit={handleSubmit(siguientePaso)}
-        className="relative bg-white rounded-2xl shadow-2xl p-10 w-full max-w-lg space-y-6"
+      {/* HEADER */}
+      <Header fullname={fullname} />
+
+      {/* CONTENIDO */}
+      <main
+        className="relative flex-grow flex items-center justify-center overflow-hidden 
+        bg-gradient-to-br from-orange-50 via-white to-sky-100 
+        dark:from-slate-900 dark:via-slate-950 dark:to-slate-900
+        transition-colors duration-300"
       >
 
-        {/* ETIQUETA PASO */}
-        <div className="absolute -top-4 left-8 bg-[#fd6303] text-white px-6 py-2 rounded-xl font-bold shadow-md">
-          Paso 1
+        {/* CÍRCULOS FLOTANTES */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-96 h-96 bg-orange-300 opacity-25 rounded-full top-1/3 -left-20" />
+          <div className="absolute w-72 h-72 bg-sky-300 opacity-25 rounded-full -top-20 left-1/2 -translate-x-1/2" />
+          <div className="absolute w-64 h-64 bg-orange-200 opacity-20 rounded-full bottom-10 -right-10" />
+          <div className="absolute w-80 h-80 bg-sky-200 opacity-25 rounded-full -bottom-20 left-10" />
         </div>
 
-        <h1 className="text-3xl font-bold text-center text-slate-700">
-          Información del Viaje
-        </h1>
+        {/* FORMULARIO */}
+        <form
+          onSubmit={handleSubmit(siguientePaso)}
+          className="relative z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl 
+          rounded-2xl shadow-2xl p-10 w-full max-w-lg space-y-6 
+          border border-white/40 dark:border-slate-700"
+        >
 
-        {/* PERSONAS */}
-        <div className="space-y-2">
-          <label className="font-semibold text-slate-600">
-            Cantidad de Personas
-          </label>
+          {/* PASO */}
+          <div className="absolute -top-4 left-8 bg-[#fd6303] text-white px-6 py-2 rounded-xl font-bold shadow-md">
+            Paso 1
+          </div>
 
-          <input
-            type="number"
-            min={1}
-            className="w-full bg-slate-100 p-3 rounded-lg"
-            {...register("numberOfPeople", {
-              required: "La cantidad es obligatoria",
-              min: { value: 1, message: "Debe ser al menos 1 persona" },
-            })}
-          />
+          <h1 className="text-3xl font-bold text-center text-slate-700 dark:text-white">
+            Información del Viaje
+          </h1>
 
-          {errors.numberOfPeople && (
-            <ErrorMessage>{errors.numberOfPeople.message}</ErrorMessage>
-          )}
-        </div>
+          {/* PERSONAS */}
+          <div className="space-y-2">
+            <label className="font-semibold text-slate-600 dark:text-slate-300">
+              Cantidad de Personas
+            </label>
 
-        {/* NIÑOS */}
-        <div className="space-y-2">
-          <label className="font-semibold text-slate-600">
-            ¿Viajan niños?
-          </label>
+            <input
+              type="number"
+              min={1}
+              className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+              {...register("numberOfPeople", {
+                required: "La cantidad es obligatoria",
+                min: { value: 1, message: "Debe ser al menos 1 persona" },
+              })}
+            />
 
-          <select
-            className="w-full bg-slate-100 p-3 rounded-lg"
-            {...register("travelchildren", {
-              required: "Este campo es obligatorio",
-            })}
-          >
-            <option value="">Selecciona una opción</option>
-            <option value="true">Sí</option>
-            <option value="false">No</option>
-          </select>
+            {errors.numberOfPeople && (
+              <ErrorMessage>{errors.numberOfPeople.message}</ErrorMessage>
+            )}
+          </div>
 
-          {errors.travelchildren && (
-            <ErrorMessage>{errors.travelchildren.message}</ErrorMessage>
-          )}
-        </div>
+          {/* NIÑOS */}
+          <div className="space-y-2">
+            <label className="font-semibold text-slate-600 dark:text-slate-300">
+              ¿Viajan niños?
+            </label>
 
-        {/* FECHA */}
-        <div className="space-y-2">
-          <label className="font-semibold text-slate-600">
-            Fecha de Viaje
-          </label>
+            <select
+              className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+              {...register("travelchildren", {
+                required: "Este campo es obligatorio",
+              })}
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
 
-          <input
-            type="date"
-            className="w-full bg-slate-100 p-3 rounded-lg"
-            {...register("date", {
-              required: "La fecha es obligatoria",
-            })}
-          />
+            {errors.travelchildren && (
+              <ErrorMessage>{errors.travelchildren.message}</ErrorMessage>
+            )}
+          </div>
 
-          {errors.date && <ErrorMessage>{errors.date.message}</ErrorMessage>}
-        </div>
+          {/* FECHA */}
+          <div className="space-y-2">
+            <label className="font-semibold text-slate-600 dark:text-slate-300">
+              Fecha de Viaje
+            </label>
 
-        {/* ESTADIA */}
-        <div className="space-y-2">
-          <label className="font-semibold text-slate-600">
-            Duración de Estadía (días)
-          </label>
+            <input
+              type="date"
+              className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+              {...register("date", {
+                required: "La fecha es obligatoria",
+              })}
+            />
 
-          <input
-            type="number"
-            min={1}
-            className="w-full bg-slate-100 p-3 rounded-lg"
-            {...register("stay", {
-              required: "La duración es obligatoria",
-              min: { value: 1, message: "Debe ser al menos 1 día" },
-            })}
-          />
+            {errors.date && <ErrorMessage>{errors.date.message}</ErrorMessage>}
+          </div>
 
-          {errors.stay && <ErrorMessage>{errors.stay.message}</ErrorMessage>}
-        </div>
+          {/* ESTADÍA */}
+          <div className="space-y-2">
+            <label className="font-semibold text-slate-600 dark:text-slate-300">
+              Duración de Estadía (días)
+            </label>
 
-        {/* BOTONES */}
-        <div className="flex justify-between pt-4">
+            <input
+              type="number"
+              min={1}
+              className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+              {...register("stay", {
+                required: "La duración es obligatoria",
+                min: { value: 1, message: "Debe ser al menos 1 día" },
+              })}
+            />
 
-          <button
-            type="button"
-            onClick={() => navigate("/users")}
-            className="bg-slate-300 hover:bg-slate-400 px-6 py-2 rounded-lg font-semibold"
-          >
-            Volver
-          </button>
+            {errors.stay && <ErrorMessage>{errors.stay.message}</ErrorMessage>}
+          </div>
 
-          <button
-            type="submit"
-            className="bg-[#fd6303] hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold"
-          >
-            Siguiente
-          </button>
+          {/* BOTONES */}
+          <div className="flex justify-between pt-4">
 
-        </div>
+            <button
+              type="button"
+              onClick={() => navigate("/users")}
+              className="bg-slate-300 hover:bg-slate-400 px-6 py-2 rounded-lg font-semibold"
+            >
+              Volver
+            </button>
 
-      </form>
+            <button
+              type="submit"
+              className="bg-[#fd6303] hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold"
+            >
+              Siguiente
+            </button>
+
+          </div>
+
+        </form>
+      </main>
+
+      {/* FOOTER */}
+      <footer
+        className="bg-[#fd6303] dark:bg-slate-900 
+        py-6 px-3 text-white text-center 
+        transition-colors duration-300"
+      >
+        <p>© 2026 Rumbo – Todos los derechos reservados.</p>
+      </footer>
+
     </div>
   );
 }
