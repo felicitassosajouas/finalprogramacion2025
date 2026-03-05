@@ -31,15 +31,27 @@
     scrollbar-width: none;
 }
 
-/* imagenes atrás del login*/
-@keyframes floatSlow {
-  0% { transform: translateY(0px) translateX(0px); }
-  50% { transform: translateY(-30px) translateX(20px); }
-  100% { transform: translateY(0px) translateX(0px); }
+
+
+/* Elementos flotantes para el login */
+@keyframes float1 {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(60px, -80px); }
+  100% { transform: translate(0px, 0px); }
 }
 
-@keyframes floatSlowReverse {
-  0% { transform: translateY(0px) translateX(0px); }
-  50% { transform: translateY(30px) translateX(-20px); }
-  100% { transform: translateY(0px) translateX(0px); }
+@keyframes float2 {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-80px, 60px); }
+  100% { transform: translate(0px, 0px); }
 }
+
+@keyframes float3 {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(40px, 40px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.float-1 { animation: float1 18s ease-in-out infinite; }
+.float-2 { animation: float2 22s ease-in-out infinite; }
+.float-3 { animation: float3 25s ease-in-out infinite; }

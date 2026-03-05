@@ -10,6 +10,7 @@ import RecommendationsView from './views/RecommendationsView';
 import Maps from './components/Maps';
 import RecommendationsFree from './components/RecommendationsFree';
 import Reserve from './components/Reserve';
+import OnboardingView from './views/Onboarding';
 
 export default function Router(){
 
@@ -31,6 +32,13 @@ export default function Router(){
                         <FormView/>
                     </PrivateRoute>
                 } />
+
+                <Route path='/onboarding' element={
+                    <PrivateRoute>
+                        <OnboardingView/>
+                    </PrivateRoute>
+                }/>
+
                 <Route path='/users' element={
                     <PrivateRoute>
                         <UsersView/>
