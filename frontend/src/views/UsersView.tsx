@@ -110,7 +110,7 @@ export default function UsersView() {
               w-full max-w-sm md:max-w-md"
             >
               <img
-                src="/2f.png"
+                src="/Ob2.jpeg"
                 alt="Planificar viaje"
                 className="w-full h-auto rounded-[2rem] drop-shadow-xl object-contain"
               />

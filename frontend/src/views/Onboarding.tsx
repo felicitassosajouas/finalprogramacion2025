@@ -53,7 +53,7 @@ export default function OnboardingView() {
                             rounded-[3rem] shadow-2xl border border-white/50 dark:border-slate-700
                             w-full max-w-sm md:max-w-md ">
               <img
-                src="/1f.png"
+                src="/Ob1.png"
                 alt="Onboarding"
                 className="w-full h-auto rounded-[2rem] drop-shadow-xl object-contain"
               />

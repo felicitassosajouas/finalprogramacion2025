@@ -57,7 +57,7 @@ return (
         </button>
 
         <button
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/onboarding")}
           className="flex-1 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-600 text-white font-bold px-5 py-2 rounded-lg shadow-lg transition"
         >
           Volver al Inicio
