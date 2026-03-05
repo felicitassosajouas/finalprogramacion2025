@@ -28,7 +28,7 @@ export default function PlanificarViaje() {
   }
 
   const initialValues: TypeForm = {
-    numberOfPeople: 1,
+    numberOfPeople: 0,
     travelchildren: "",
     date: "",
     stay: 1,
@@ -97,7 +97,7 @@ export default function PlanificarViaje() {
               <input
                 type="number"
                 min={1}
-                className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white p-3 rounded-lg"
                 {...register("numberOfPeople", {
                   required: "La cantidad es obligatoria",
                   min: { value: 1, message: "Debe ser al menos 1 persona" },
@@ -116,7 +116,7 @@ export default function PlanificarViaje() {
               </label>
 
               <select
-                className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white p-3 rounded-lg"
                 {...register("travelchildren", {
                   required: "Este campo es obligatorio",
                 })}
@@ -139,7 +139,7 @@ export default function PlanificarViaje() {
 
               <input
                 type="date"
-                className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white p-3 rounded-lg"
                 {...register("date", {
                   required: "La fecha es obligatoria",
                 })}
@@ -159,7 +159,7 @@ export default function PlanificarViaje() {
               <input
                 type="number"
                 min={1}
-                className="w-full bg-slate-100 dark:bg-slate-800 p-3 rounded-lg"
+                className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white p-3 rounded-lg"
                 {...register("stay", {
                   required: "La duración es obligatoria",
                   min: { value: 1, message: "Debe ser al menos 1 día" },
