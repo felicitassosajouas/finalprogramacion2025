@@ -55,3 +55,12 @@
 .float-1 { animation: float1 18s ease-in-out infinite; }
 .float-2 { animation: float2 22s ease-in-out infinite; }
 .float-3 { animation: float3 25s ease-in-out infinite; }
+
+/* Nuevas animaciones para Onboarding y UsersView */
+@keyframes float4 {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-30px, 50px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.float-4 { animation: float4 20s ease-in-out infinite; }

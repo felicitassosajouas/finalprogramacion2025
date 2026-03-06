@@ -65,7 +65,7 @@ export default function PlanificarViajeStep2() {
           ? fullForm.interests.filter((i) => i)
           : [],
       };
-      
+
       console.log(payload);
 
       const token = localStorage.getItem("token");
@@ -86,7 +86,6 @@ export default function PlanificarViajeStep2() {
       navigate("/recomendaciones", {
         state: { recommendations: data.data },
       });
-
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         toast.error(error.response.data.message);
@@ -106,7 +105,6 @@ export default function PlanificarViajeStep2() {
         dark:from-slate-900 dark:via-slate-950 dark:to-slate-900
         transition-colors duration-300"
       >
-
         {/* CÍRCULOS DECORATIVOS */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute w-96 h-96 bg-orange-300 opacity-25 rounded-full top-1/3 -left-20" />
@@ -116,7 +114,6 @@ export default function PlanificarViajeStep2() {
         </div>
 
         <div className="relative w-full max-w-lg">
-
           {/* CÍRCULO PASO */}
           <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-20">
             <div className="w-16 h-16 bg-[#fd6303] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
@@ -131,9 +128,8 @@ export default function PlanificarViajeStep2() {
             pt-16 pb-10 px-10 w-full space-y-6
             border border-white/40 dark:border-slate-700"
           >
-
             <h1 className="text-3xl font-bold text-center text-slate-700 dark:text-white">
-              Preferencias del Viaje
+              Preferencias del viaje
             </h1>
 
             {/* PRESUPUESTO */}
@@ -165,32 +161,50 @@ export default function PlanificarViajeStep2() {
               </label>
 
               <div className="flex flex-col gap-2 text-slate-700 dark:text-slate-200">
-
                 <label className="flex gap-2">
-                  <input type="checkbox" value="gastronomia" {...register("interests")} />
+                  <input
+                    type="checkbox"
+                    value="gastronomia"
+                    {...register("interests")}
+                  />
                   Gastronomía
                 </label>
 
                 <label className="flex gap-2">
-                  <input type="checkbox" value="cultura" {...register("interests")} />
+                  <input
+                    type="checkbox"
+                    value="cultura"
+                    {...register("interests")}
+                  />
                   Cultura
                 </label>
 
                 <label className="flex gap-2">
-                  <input type="checkbox" value="aventura" {...register("interests")} />
+                  <input
+                    type="checkbox"
+                    value="aventura"
+                    {...register("interests")}
+                  />
                   Aventura
                 </label>
 
                 <label className="flex gap-2">
-                  <input type="checkbox" value="naturaleza" {...register("interests")} />
+                  <input
+                    type="checkbox"
+                    value="naturaleza"
+                    {...register("interests")}
+                  />
                   Naturaleza
                 </label>
 
                 <label className="flex gap-2">
-                  <input type="checkbox" value="vino" {...register("interests")} />
+                  <input
+                    type="checkbox"
+                    value="vino"
+                    {...register("interests")}
+                  />
                   Enoturismo
                 </label>
-
               </div>
             </div>
 
@@ -216,7 +230,6 @@ export default function PlanificarViajeStep2() {
 
             {/* BOTONES */}
             <div className="flex justify-between pt-4">
-
               <button
                 type="button"
                 onClick={() => navigate(-1)}
@@ -231,26 +244,21 @@ export default function PlanificarViajeStep2() {
               >
                 Generar Recomendaciones
               </button>
-
             </div>
-
           </form>
 
           {/* INDICADOR PASOS */}
-{/* INDICADOR PASOS */}
-<div className="flex items-center justify-center mt-8">
+          {/* INDICADOR PASOS */}
+          <div className="flex items-center justify-center mt-8">
+            {/* PASO 1 */}
+            <div className="w-4 h-4 rounded-full bg-slate-300"></div>
 
-  {/* PASO 1 */}
-  <div className="w-4 h-4 rounded-full bg-slate-300"></div>
+            {/* LINEA */}
+            <div className="w-40 h-[2px] bg-slate-300"></div>
 
-  {/* LINEA */}
-  <div className="w-40 h-[2px] bg-slate-300"></div>
-
-  {/* PASO 2 */}
-  <div className="w-4 h-4 rounded-full bg-[#fd6303]"></div>
-
-</div>
-
+            {/* PASO 2 */}
+            <div className="w-4 h-4 rounded-full bg-[#fd6303]"></div>
+          </div>
         </div>
 
         {loading && (
@@ -261,7 +269,6 @@ export default function PlanificarViajeStep2() {
             </p>
           </div>
         )}
-
       </main>
 
       <footer
@@ -271,7 +278,6 @@ export default function PlanificarViajeStep2() {
       >
         <p>© 2026 Rumbo – Todos los derechos reservados.</p>
       </footer>
-
     </div>
   );
 }

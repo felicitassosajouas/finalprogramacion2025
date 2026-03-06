@@ -22,12 +22,12 @@ export const Features = () => {
         { 
             img: "/images/icons/foot.png", 
             text: "Free Walking Tours",
-            back: "Encontrá tours gratuitos en distintos puntos de la provincia"
+            back: "Encontrá tours en distintos puntos de la provincia"
         },
     ];
 
     return (
-        <div className="py-24 px-4">
+        <div className="py-14 px-4">
             <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
                 {services.map((s, i) => {
                     const isActive = activeCard === i;

@@ -15,7 +15,7 @@ export default function MainView() {
       <main className="flex-grow">
         <div className="text-center pt-16 pb-8">
           <h1
-            className="text-4xl md:text-5xl font-bold 
+            className="text-4xl md:text-4xl font-bold 
                                    text-[#fd6303] 
                                    dark:text-orange-400 
                                    transition-colors
@@ -25,7 +25,7 @@ export default function MainView() {
             Planificá tu propio viaje
           </h1>
           <p className="mt-5 text-gray-950 dark:text-slate-400 text-lg font-alegreya font-black">
-            Descubrí experiencias únicas en Mendoza
+            {/* Descubrí experiencias únicas en Mendoza */}
           </p>
         </div>
 

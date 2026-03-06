@@ -85,13 +85,13 @@ export default function PlanificarViaje() {
             border border-white/40 dark:border-slate-700"
           >
             <h1 className="text-3xl font-bold text-center text-slate-700 dark:text-white">
-              Plánifica tu viaje!
+              ¡Plánifica tu viaje!
             </h1>
 
             {/* PERSONAS */}
             <div className="space-y-2">
               <label className="font-semibold text-slate-600 dark:text-slate-300">
-                Cantidad de Personas
+                Cantidad de personas
               </label>
 
               <input
@@ -134,7 +134,7 @@ export default function PlanificarViaje() {
             {/* FECHA */}
             <div className="space-y-2">
               <label className="font-semibold text-slate-600 dark:text-slate-300">
-                Fecha de Viaje
+                Fecha de llegada
               </label>
 
               <input
@@ -153,7 +153,7 @@ export default function PlanificarViaje() {
             {/* ESTADÍA */}
             <div className="space-y-2">
               <label className="font-semibold text-slate-600 dark:text-slate-300">
-                Duración de Estadía (días)
+                Duración de estadía (días)
               </label>
 
               <input

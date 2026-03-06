@@ -96,7 +96,7 @@ export default function RegisterView() {
         {/* Fullname */}
         <div className="w-full mb-6 flex flex-col">
           <label className="text-xl text-slate-800 dark:text-slate-200 font-semibold mb-2">
-            Nombre Completo
+            Nombre completo
           </label>
 
           <input
