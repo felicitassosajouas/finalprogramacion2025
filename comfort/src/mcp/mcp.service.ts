@@ -37,6 +37,7 @@ export class McpService implements OnModuleInit {
     - Cada línea debe contener una recomendación breve (máximo 2 líneas).
     - Formato: "1. Nombre del lugar (Zona o barrio) — breve descripción".
     - Devuelve solo la lista numerada, sin explicaciones ni texto adicional.
+    - Agregale el costo de las recomendaciones sin que moleste para el mapa
     `;
 
     // Prompt de recomendaciones para la valija

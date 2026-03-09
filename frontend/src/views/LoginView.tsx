@@ -24,10 +24,7 @@ export default function LoginView() {
         duration: 2000,
         onAutoClose: () => navigate("/onboarding")
       });
-
-      // setTimeout(() => {
-      //   navigate("/onboarding");
-      // }, 600);
+      
     } catch (error) {
       console.error("Error en el login:", error);
       if (isAxiosError(error) && error.response) {
