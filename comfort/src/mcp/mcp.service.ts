@@ -52,6 +52,7 @@ export class McpService implements OnModuleInit {
     "Consejos adicionales:".
 
     Mantén las recomendaciones prácticas y breves (máx. 2 líneas por ítem).
+    Separá las sugerencias por items.
     `;
 
     // Llamamos al MCP para ambos prompts

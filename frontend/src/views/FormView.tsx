@@ -34,7 +34,7 @@ export default function PlanificarViaje() {
     stay: 1,
     budget: 0,
     interests: [],
-    city: "",
+    city: "Mendoza",
   };
 
   const {

@@ -216,7 +216,8 @@ export default function PlanificarViajeStep2() {
 
               <input
                 type="text"
-                placeholder="Ej: Mendoza"
+                value="Mendoza"
+                readOnly
                 className="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white p-3 rounded-lg"
                 {...register("city", {
                   required: "La ciudad es obligatoria",
