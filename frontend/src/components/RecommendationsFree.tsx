@@ -57,7 +57,7 @@ Un lugar encantador rodeado de bodegas, restaurantes y artesanías locales.
 - Ideal para disfrutar la cultura local y la gastronomía.
 - **Horario:** 10:00 AM - 6:00 PM  
 - **Recorrido recomendado:** Pasear por la plaza, visitar bodegas cercanas y cafés.  
-- **Guía turístico:** Sofia Gomez.  
+- **Guía turístico:** Sofía Gomez.  
 - **Puntos de interés cercanos:** Bodega La Azul, Mercado de Artesanías, Plaza Central.  
 - Ideal para caminar con tranquilidad y disfrutar de la cultura local.`,
   };

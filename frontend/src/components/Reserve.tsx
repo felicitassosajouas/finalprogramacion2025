@@ -184,10 +184,10 @@ export default function ReservaView() {
               </p>
 
               <button
-                onClick={() => navigate("/onBoarding")}
+                onClick={() => navigate("/recomendaciones")}
                 className="w-full bg-[#fd6303] hover:bg-orange-600 text-white p-4 rounded-2xl font-bold text-xl shadow-lg transform transition active:scale-95"
               >
-                Volver a inicio
+                Volver a recomendaciones
               </button>
             </div>
           )}

@@ -36,15 +36,17 @@ type Marcador = {
 export default function Mapa() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { recommendations } = location.state || { recommendations: "" };
 
-  // --- ESTADOS ---
+  // 1. SOLUCIÓN: Intentar recuperar del state o del almacenamiento local
+  const [recommendations] = useState(() => {
+    const saved = localStorage.getItem("current_recommendations");
+    return location.state?.recommendations || saved || "";
+  });
+
   const [marcadores, setMarcadores] = useState<Marcador[]>([]);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState<'todos' | 'ia' | 'tour'>('todos');
-  
-  // Detectar si el sistema o la app ya están en modo oscuro
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
 
   const baseCoords: [number, number] = [-32.8895, -68.8458];
@@ -55,7 +57,6 @@ export default function Mapa() {
     { texto: "Free Walking Tour - Plaza de Chacras", coords: [-32.9675, -68.8792], tipo: 'tour' },
   ];
 
-  // Alternar Modo Oscuro
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     if (!isDarkMode) {
@@ -83,7 +84,7 @@ export default function Mapa() {
   };
 
   function extraerNombreLugar(linea: string): string {
-    let limpio = linea.replace(/^(\d+\.|D[ií]a\s*\d+:)\s*/i, "").trim();
+    let limpio = linea.replace(/\*\*/g, "").replace(/^(\d+\.|D[ií]a\s*\d+:)\s*/i, "").trim();
     const partes = limpio.split(/[—–-]/);
     return partes[0].trim();
   }
@@ -100,16 +101,23 @@ export default function Mapa() {
 
   useEffect(() => {
     async function fetchMarkers() {
-      if (!recommendations) { setLoading(false); return; }
+      // Si después de buscar en state y localStorage sigue vacío, paramos.
+      if (!recommendations) { 
+        setLoading(false); 
+        return; 
+      }
+
       const lineas = recommendations.split("\n").filter((line: string) => 
         line.trim() && !line.includes("valija") && (line.includes("**") || /^\d+\./.test(line.trim()))
       );
+      
       const newMarkers: Marcador[] = [];
       for (const linea of lineas) {
-        const nombreLugar = extraerNombreLugar(linea.replace(/\*\*/g, ""));
+        const nombreLugar = extraerNombreLugar(linea);
         if (nombreLugar.length < 3) continue;
         const coords = await getCoords(nombreLugar);
         if (coords) newMarkers.push({ texto: nombreLugar, coords, tipo: 'ia' });
+        // Delay para no saturar la API gratuita de mapas
         await new Promise((res) => setTimeout(res, 600));
       }
       setMarcadores(newMarkers);
@@ -137,14 +145,40 @@ export default function Mapa() {
           </button>
 
           <div className={`flex gap-2 p-1 rounded-full ${isDarkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>
-            <button onClick={() => setFiltro('todos')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filtro === 'todos' ? (isDarkMode ? 'bg-slate-600 text-white' : 'bg-white text-orange-600 shadow-sm') : 'text-slate-700'}`}>Todos</button>
-            <button onClick={() => setFiltro('ia')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filtro === 'ia' ? 'bg-[#fd6303] text-white' : 'text-slate-700'}`}>Sugerencias</button>
-            <button onClick={() => setFiltro('tour')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filtro === 'tour' ? 'bg-[#06b6d4] text-white' : 'text-slate-700'}`}>Tours</button>
+            <button 
+              onClick={() => setFiltro('todos')} 
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                filtro === 'todos' 
+                  ? (isDarkMode ? 'bg-slate-600 text-white' : 'bg-white text-orange-600 shadow-sm') 
+                  : (isDarkMode ? 'text-slate-200' : 'text-slate-700')
+              }`}
+            >
+              Todos
+            </button>
+            <button 
+              onClick={() => setFiltro('ia')} 
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                filtro === 'ia' 
+                  ? 'bg-[#fd6303] text-white' 
+                  : (isDarkMode ? 'text-slate-200' : 'text-slate-700')
+              }`}
+            >
+              Sugerencias
+            </button>
+            <button 
+              onClick={() => setFiltro('tour')} 
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                filtro === 'tour' 
+                  ? 'bg-[#06b6d4] text-white' 
+                  : (isDarkMode ? 'text-slate-200' : 'text-slate-700')
+              }`}
+            >
+              Tours
+            </button>
           </div>
 
           <div className={`h-6 w-[1px] ${isDarkMode ? 'bg-slate-600' : 'bg-slate-200'}`}></div>
 
-          {/* 🌙 BOTÓN MODO OSCURO */}
           <button 
             onClick={toggleDarkMode}
             className={`p-2 rounded-full transition-all duration-300 ${isDarkMode ? 'bg-amber-400 text-slate-900 rotate-[360deg]' : 'bg-slate-800 text-white'}`}
@@ -171,7 +205,6 @@ export default function Mapa() {
         )}
 
         <MapContainer center={baseCoords} zoom={12} zoomControl={false} className="h-full w-full">
-          {/* CAMBIO DINÁMICO DE TILES SEGÚN EL MODO */}
           <TileLayer
             key={isDarkMode ? "dark-tiles" : "light-tiles"}
             attribution='© CARTO'
@@ -186,26 +219,28 @@ export default function Mapa() {
 
           {userLocation && (
             <Marker position={userLocation} icon={iconUser}>
-              <Popup><b>Estás aquí</b></Popup>
+              <Popup><b className="text-slate-900 font-sans">Estás aquí</b></Popup>
             </Marker>
           )}
 
           {marcadoresAMostrar.map((item, idx) => (
             <Marker key={`${item.tipo}-${idx}`} position={item.coords} icon={item.tipo === 'ia' ? iconIA : iconTour}>
               <Popup>
-                <div className={`p-1 min-w-[150px] transition-colors ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>
-                  <span className={`text-[10px] font-bold uppercase block mb-1 ${item.tipo === 'ia' ? 'text-orange-500' : 'text-cyan-500'}`}>
+                <div className="p-1 min-w-[150px] bg-white">
+                  <span className={`text-[10px] font-bold uppercase block mb-1 font-sans ${item.tipo === 'ia' ? 'text-orange-600' : 'text-cyan-600'}`}>
                     {item.tipo === 'ia' ? 'Recomendación IA' : 'Tour'}
                   </span>
-                  <p className="m-0 font-bold text-sm mb-2">{item.texto}</p>
+                  <p className="m-0 font-bold text-sm mb-3 text-slate-800 leading-tight font-sans">
+                    {item.texto}
+                  </p>
                   
                   <a 
                     href={getDirectionsLink(item.coords)} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-block w-full text-center bg-orange-500 text-white text-[11px] py-1.5 rounded-lg font-bold hover:bg-orange-600 transition-colors no-underline"
+                    className="inline-block w-full text-center bg-[#fd6303] text-white text-[11px] py-2 rounded-lg font-bold hover:bg-orange-600 transition-colors no-underline shadow-sm font-sans"
                   >
-                    Cómo llegar ↗
+                    Cómo llegar
                   </a>
                 </div>
               </Popup>

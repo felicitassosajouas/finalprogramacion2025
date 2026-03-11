@@ -6,16 +6,22 @@ export default function Recomendaciones() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { recommendations: initialRecommendations } = location.state || {
-    recommendations: "",
-  };
+  // 1. LÓGICA DE PERSISTENCIA: Intentar recuperar de localStorage si el state está vacío
+  const [recommendations, setRecommendations] = useState(() => {
+    const saved = localStorage.getItem("current_recommendations");
+    return location.state?.recommendations || saved || "";
+  });
 
-  const [recommendations, setRecommendations] = useState(initialRecommendations);
   const [modalContent, setModalContent] = useState<string | null>(null);
   const [fullname, setFullname] = useState<string | undefined>(undefined);
   const [showFreeOptions, setShowFreeOptions] = useState(false);
 
   useEffect(() => {
+    // 2. GUARDAR: Si entramos con recomendaciones nuevas, las respaldamos
+    if (location.state?.recommendations) {
+      localStorage.setItem("current_recommendations", location.state.recommendations);
+    }
+
     const user = localStorage.getItem("user");
     if (user) {
       const parsedUser = JSON.parse(user);
@@ -25,7 +31,7 @@ export default function Recomendaciones() {
     if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
     }
-  }, []);
+  }, [location.state]);
 
   const toggleDarkMode = () => {
     const html = document.documentElement;
@@ -44,13 +50,10 @@ export default function Recomendaciones() {
 
   const contenidoValija = secciones.find((s) => s.toLowerCase().includes("valija")) || "Cargando sugerencias...";
 
-  // FUNCIÓN CORREGIDA: Elimina números y formatea para el mapa
   const formatearTexto = (texto: string) => {
     return texto
       .replace(/(Recomendaciones de viaje:)/gi, "**$1**")
-      // Elimina numeraciones tipo "1.", "2.", "000. 4." al inicio de la línea y pone el nombre en negrita
       .replace(/^(\d+\.|\w+\.\s*\d+\.)\s*([^—\n]+)(?= —)/gm, "**$2**")
-      // Limpia numeraciones que queden sueltas sin el separador "—"
       .replace(/^(\d+\.)\s+/gm, "");
   };
 
@@ -128,14 +131,25 @@ export default function Recomendaciones() {
               className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8 transition-opacity duration-300 ${showFreeOptions ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
               onClick={() => setShowFreeOptions(true)}
             >
-              <span className="text-white text-2xl font-bold border-l-4 border-[#fd6303] pl-4 w-full text-left">Free Tours</span>
+              <span className="text-white text-2xl font-bold border-l-4 border-[#fd6303] pl-4 w-full text-left">Tours</span>
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 mt-16 mb-10">
           <button onClick={() => navigate("/onboarding")} className="px-8 py-3 rounded-full border-2 border-slate-200 dark:border-slate-700 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition">Inicio</button>
-          <button onClick={() => navigate("/form")} className="px-8 py-3 rounded-full border-2 border-slate-200 dark:border-slate-700 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition">Volver a formulario</button>
+          
+          <button 
+            onClick={() => {
+              // Limpiar memoria al querer un viaje nuevo
+              localStorage.removeItem("current_recommendations");
+              navigate("/form");
+            }} 
+            className="px-8 py-3 rounded-full border-2 border-slate-200 dark:border-slate-700 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+          >
+            Volver a formulario
+          </button>
+
           <button 
             onClick={() => navigate("/mapa", { state: { recommendations } })} 
             className="bg-[#fd6303] text-white px-12 py-3 rounded-full font-bold shadow-lg hover:brightness-110 transform transition active:scale-95"
